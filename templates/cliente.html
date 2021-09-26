@@ -1,21 +1,5 @@
-<!--
-=========================================================
-* Argon Dashboard - v1.2.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-
-
-* Copyright  Creative Tim (http://www.creative-tim.com)
-* Coded by www.creative-tim.com
-
-
-
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,15 +11,33 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <!-- Icons -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/nucleo/css/nucleo.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/nucleo/css/nucleo.css') }}"
+          type="text/css">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}"
+          type="text/css">
     <!-- Page plugins -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/argon.css') }}" type="text/css">
-</head>  
+    <link rel="stylesheet" href="{{ url_for('static', filename='cost.css') }}" type="text/css">
 
+</head>
 <body>
-<!-- Sidenav -->
+<style>
+    body.modal-open .supreme-container {
+        -webkit-filter: blur(1px);
+        -moz-filter: blur(1px);
+        -o-filter: blur(1px);
+        -ms-filter: blur(1px);
+        filter: blur(1px);
+    }
+</style>
+
 <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
         <!-- Brand -->
@@ -50,12 +52,12 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">
+                        <a class="nav-link" href="/">
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
 
-                    {% if user.role == "Cliente" %}
+                    {% if user.role == "User" %}
                         <li class="nav-item">
                             <a class="nav-link" href="icons.html">
                                 <span class="nav-link-text">Solicitação de dados</span>
@@ -69,7 +71,7 @@
                         </li>
                     {% endif %}
 
-                    {% if user.role == "Cliente" %}
+                    {% if user.role == "User" %}
                         <li class="nav-item">
                             <a class="nav-link" href="map.html">
                                 <span class="nav-link-text">Plus</span>
@@ -84,7 +86,7 @@
                     {% endif %}
 
 
-                    {% if user.role == "Cliente" %}
+                    {% if user.role == "User" %}
                         <li class="nav-item">
                             <a class="nav-link" href="profile.html">
                                 <span class="nav-link-text">Mensageiro</span>
@@ -92,14 +94,14 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/cliente">
+                            <a class="nav-link active" href="/cliente">
                                 <span class="nav-link-text">Cliente</span>
                             </a>
                         </li>
                     {% endif %}
 
 
-                    {% if user.role == "Cliente" %}
+                    {% if user.role == "User" %}
                         <li class="nav-item">
                             <a class="nav-link" href="tables.html">
                                 <span class="nav-link-text">Divulgação</span>
@@ -114,7 +116,7 @@
                     {% endif %}
 
 
-                    {% if user.role == "Cliente" %}
+                    {% if user.role == "User" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/login">
                                 <span class="nav-link-text">SMS</span>
@@ -132,8 +134,8 @@
         </div>
     </div>
 </nav>
-<!-- Main content -->
 <div class="main-content" id="panel">
+
     <!-- Topnav -->
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
         <div class="container-fluid">
@@ -187,7 +189,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <!-- Avatar -->
-                                            <img alt="Image placeholder" src="{{ url_for('static', filename='assets/img/theme/team-1.jpg') }}"
+                                            <img alt="Image placeholder"
+                                                 src="{{ url_for('static', filename='assets/img/theme/team-1.jpg') }}"
                                                  class="avatar rounded-circle">
                                         </div>
                                         <div class="col ml--2">
@@ -207,7 +210,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <!-- Avatar -->
-                                            <img alt="Image placeholder" src="{{ url_for('static', filename='assets/img/theme/team-2.jpg') }}"
+                                            <img alt="Image placeholder"
+                                                 src="{{ url_for('static', filename='assets/img/theme/team-2.jpg') }}"
                                                  class="avatar rounded-circle">
                                         </div>
                                         <div class="col ml--2">
@@ -227,7 +231,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <!-- Avatar -->
-                                            <img alt="Image placeholder" src="{{ url_for('static', filename='assets/img/theme/team-3.jpg') }}"
+                                            <img alt="Image placeholder"
+                                                 src="{{ url_for('static', filename='assets/img/theme/team-3.jpg') }}"
                                                  class="avatar rounded-circle">
                                         </div>
                                         <div class="col ml--2">
@@ -247,7 +252,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <!-- Avatar -->
-                                            <img alt="Image placeholder" src="{{ url_for('static', filename='assets/img/theme/team-4.jpg') }}"
+                                            <img alt="Image placeholder"
+                                                 src="{{ url_for('static', filename='assets/img/theme/team-4.jpg') }}"
                                                  class="avatar rounded-circle">
                                         </div>
                                         <div class="col ml--2">
@@ -267,7 +273,8 @@
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <!-- Avatar -->
-                                            <img alt="Image placeholder" src="{{ url_for('static', filename='assets/img/theme/team-5.jpg') }}"
+                                            <img alt="Image placeholder"
+                                                 src="{{ url_for('static', filename='assets/img/theme/team-5.jpg') }}"
                                                  class="avatar rounded-circle">
                                         </div>
                                         <div class="col ml--2">
@@ -334,18 +341,36 @@
             </div>
         </div>
     </nav>
-    <!-- Header -->
-    <!-- Header -->
+
+
+    <!-- Mensagens-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="notice notice-danger" onclick="this.style.display='none';">
+                        <strong>Erro</strong> {{ message }}
+                    </div>
+
+                {% else %}
+                    <div class="notice notice-success" onclick="this.style.display='none';">
+                        <strong>Sucesso</strong> {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
+                        <h6 class="h2 text-white d-inline-block mb-0">Clientes</h6>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item active">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item active">Clientes</li>
                             </ol>
                         </nav>
                     </div>
@@ -356,10 +381,18 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-stats">
                             <!-- Card body -->
-                            <div class="card-body">
-                                <div class="row">
+                            <div class="card-body" onclick="tabb()">
+                                <div id="pesq" style="display:none;">
+                                    <div class="mb-0">
+                                        <div class="input-group input-group-alternative input-group-merge">
+                                            <input id="pesqy" name="pesqy" class="form-control" placeholder="Pesquisa"
+                                                   type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="statstl">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Total leads</h5>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Total Clientes</h5>
                                         <span class="h2 font-weight-bold mb-0">{{ tt }}</span>
                                     </div>
                                     <div class="col-auto">
@@ -377,11 +410,11 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-stats">
                             <!-- Card body -->
-                            <div class="card-body">
+                            <div class="card-body" id="most">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">New leads</h5>
-                                        <span class="h2 font-weight-bold mb-0">{{ var.count }}</span>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Clientes Pendentes</h5>
+                                        <span class="h2 font-weight-bold mb-0">{{ nc }}</span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -398,11 +431,11 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-stats">
                             <!-- Card body -->
-                            <div class="card-body">
+                            <div class="card-body" id="criar">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Download Realizado</h5>
-                                        <span class="h2 font-weight-bold mb-0">924</span>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Criar Novo Cliente</h5>
+                                        <span class="h2 font-weight-bold mb-0"></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -441,95 +474,207 @@
             </div>
         </div>
     </div>
+    <!-- Header -->
+
     <!-- Page content -->
-    <div class="container-fluid mt--6">
-        <div class="row">
-            <div class="col-xl-8">
-                <div class="card bg-default">
+
+    <div class="container-fluid mt--6" id="tab">
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="card">
                     <div class="card-header bg-transparent">
                         <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                                <h5 class="h3 text-white mb-0">Download Realizado</h5>
+                            <div class="table-responsive">
+                                <table class="table align-items-center">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Cargo</th>
+                                        <th>NIF</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in dados %}
+                                        <tr>
+                                            <td>{{ data.id }}</td>
+                                            <td>{{ data.name }}</td>
+                                            <td>{{ data.email }}</td>
+                                            <td>{{ data.role }}</td>
+                                            <td>{{ data.nif }}</td>
+                                            <td><a class="btn btn-warning" href="/user/{{ data.id }}/update">Editar</a>
+                                                <a class="btn btn-danger" href="/user/{{ data.id }}/delete">Apagar</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="col">
-                                <ul class="nav nav-pills justify-content-end">
-                                    <li class="nav-item mr-2 mr-md-0" data-toggle="chart"
-                                        data-target="#chart-sales-dark"
-                                        data-update='{"data":{"datasets":[{"data":[0, 20, 10, 30, 15, 40, 20, 60, 60]}]}}'
-                                        data-prefix="$" data-suffix="k">
-                                        <a href="#" class="nav-link py-2 px-3 active" data-toggle="tab">
-                                            <span class="d-none d-md-block">Month</span>
-                                            <span class="d-md-none">M</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item" data-toggle="chart" data-target="#chart-sales-dark"
-                                        data-update='{"data":{"datasets":[{"data":[0, 20, 5, 25, 10, 30, 15, 40, 40]}]}}'
-                                        data-prefix="$" data-suffix="k">
-                                        <a href="#" class="nav-link py-2 px-3" data-toggle="tab">
-                                            <span class="d-none d-md-block">Week</span>
-                                            <span class="d-md-none">W</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <!-- Chart -->
-                        <div class="chart">
-                            <!-- Chart wrapper -->
-                            <canvas id="chart-sales-dark" class="chart-canvas"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xl-4">
-                <div class="card">
-                    <div class="card-header bg-transparent">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                                <h5 class="h3 mb-0">Downloads a realizar</h5>
+        </div>
+    </div>
+
+    {# Modal Importar #}
+    <div id="upload" class="modal">
+        <div class=" py-7 py-lg-8 pt-lg-9">
+        </div>
+        <div class="container mt--8 pb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-7">
+                    <div class="card bg-secondary border-0 mb-0">
+
+                        <div class="card-body px-lg-5 py-lg-5">
+                            <span class="close">&times;</span>
+                            <div class="text-center text-muted mb-4">
+
                             </div>
+                            <form method="POST">
+                                <h1>Criar Cliente</h1>
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                        </div>
+                                        <input class="form-control" name="nome" placeholder="Nome" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        </div>
+                                        <input class="form-control" name="email" placeholder="Email" type="email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        </div>
+                                        <select class="form-control"  title="Cargo" name="cargo">
+                                        <option selected hidden value="Cliente">Cargo</option>
+                                        <option value="Cliente">Cliente</option>
+                                        <option value="Parceiro">Parceiro</option>
+                                        <option value="Admin">Administrador</option>
+                                    </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <button class="btn btn-dark" id="but" type="submit">
+                                    Submeter
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <!-- Chart -->
-                        <div class="chart">
-                            <canvas id="chart-bars" class="chart-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Modal Tabela #}
+
+
+    <div id="tabe" class="modal">
+
+        <div class=" py-7 py-lg-8 pt-lg-9">
+        </div>
+        <div class="container mt--8 pb-5">
+            <div class="row justify-content-center">
+
+                <div class="card bg-secondary border-0 mb-0">
+
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <span class="close tclose">&times;</span>
+
+                        <div class="table-responsive">
+                            <table class="table align-items-center">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Ação</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in edados %}
+                                    <tr>
+                                        <td>{{ data.id }}</td>
+                                        <td>{{ data.nome }}</td>
+                                        <td>{{ data.email }}</td>
+                                        <td>
+                                            <a class="btn btn-danger" href="/cliente/{{ data.id }}/delete">Apagar</a>
+                                            <a class="btn btn-danger" href="/cliente/{{ data.id }}/reset">ReEnviar</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="footer pt-0">
-            <div class="row align-items-center justify-content-lg-between">
-                <div class="col-lg-6">
-                    <div class="copyright text-center  text-lg-left  text-muted">
-                        &copy; 2021 <a href="#" class="font-weight-bold ml-1"
-                                       target="_blank">IETTTO</a>
-                    </div>
-                </div>
-
-            </div>
-        </footer>
     </div>
-</div>
-<!-- Argon Scripts -->
-<!-- Core -->
-<script src="{{ url_for('static', filename='assets/vendor/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/js-cookie/js.cookie.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
-<!-- Optional JS -->
-<script src="{{ url_for('static', filename='assets/vendor/chart.js/dist/Chart.min.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/chart.js/dist/Chart.extension.js') }}"></script>
-<!-- Argon JS -->
-<script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
-</body>
+    <script>
+        function nott() {
+            alert("Funcionalidade ainda não implementada");
+        }
 
+        // Get the modal
+        var mimportar = document.getElementById("upload");
+        var tab = document.getElementById("tabe");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("criar");
+        var tbtn = document.getElementById("most");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        var tspan = document.getElementsByClassName("tclose")[0];
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function () {
+            mimportar.style.display = "block";
+        }
+        tbtn.onclick = function () {
+            tab.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            mimportar.style.display = "none";
+        }
+        tspan.onclick = function () {
+            tab.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == mimportar) {
+                mimportar.style.display = "none";
+            }
+        }
+        window.onclick = function (event) {
+            if (event.target == mimportar) {
+                tab.style.display = "none";
+            }
+        }
+    </script>
+
+    <script src="{{ url_for('static', filename='assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/js-cookie/js.cookie.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
+    <!-- Optional JS -->
+    <!-- Argon JS -->
+    <script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
+
+</body>
 </html>
