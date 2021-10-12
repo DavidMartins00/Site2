@@ -19,7 +19,7 @@
     <meta name="author" content="Creative Tim">
     <title>Sol Online</title>
     <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='assets/img/brand/favicon.png') }}" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='assets/img/logo.png') }}" type="image/png">
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
     <!-- Icons -->
@@ -131,7 +131,7 @@
     <div class="container mt--8 pb-5">
         <!-- Table -->
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8">
+            <div class="col-lg-8 col-md-8">
                 <div class="card bg-secondary border-0">
                     <div class="card-body px-lg-5 py-lg-5">
                         <form role="form" method="POST" autocomplete="off">
@@ -196,18 +196,60 @@
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-merge input-group-alternative mb-3">
-                                    <div class="input-group-prepend" title="them's hoverin' words">
-                                        <span class="input-group-text"><i class="fas fa-question-circle" ></i></span>
-                                    </div>
                                     <input class="form-control" name="perfil1" placeholder="Perfil 1" type="text">
+                                    <div class="input-group-append" data-toggle="tooltip" data-placement="top"
+                                         title="Neste campo, solicitamos que seja colocado a informação a ser pesquisada pelos nossos servidores">
+                                        <span class="input-group-text"><i class="fas fa-question-circle"></i></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-group input-group-merge input-group-alternative mb-3">
-                                    <div class="input-group-prepend" title="them's hoverin' words">
-                                        <span class="input-group-text"><i class="fas fa-question-circle" ></i></span>
-                                    </div>
                                     <input class="form-control" name="perfil2" placeholder="Perfil 2" type="text">
+                                    <div class="input-group-append" data-toggle="tooltip" data-placement="top"
+                                         title="Neste campo, solicitamos que seja colocado a informação a ser pesquisada pelos nossos servidores">
+                                        <span class="input-group-text"><i class="fas fa-question-circle"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <div>
+                                    <table class="table align-items-center">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">
+                                                Quantidade
+                                            </th>
+                                            <th scope="col">
+                                                Preço Unidade
+                                            </th>
+                                            <th scope="col">
+                                                Valor do iva(23%)
+                                            </th>
+                                            <th scope="col">
+                                                Valor Total
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="list">
+                                        {% for data in lds %}
+                                            <tr>
+                                                <td>
+                                                    {{ data.num }}
+                                                </td>
+                                                <td>
+                                                    {{ data.pin }}€
+                                                </td>
+                                                <td>
+                                                    {{ data.piva }}€
+                                                </td>
+                                                <td>
+                                                    {{ data.ptot }}€
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -215,20 +257,19 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-box-2"></i></span>
                                     </div>
-                                    <select class="form-control"  title="Leads" name="leads">
-                                        <option selected disabled value="100">Leads</option>
-                                        <option value="100">100 - 61,5€</option>
-                                        <option disabled>Pacotes(100) Valor Mensal(50€) IVA(23% - 61,5€)</option>
-                                        <option value="150">150 - 92,25€</option>
-                                        <option value="250">250 - 123€</option>
-                                        <option value="300">300 - 184,5€</option>
-                                        <option value="400">400 - 246€</option>
-                                        <option value="500">500 - 369€</option>
-                                        <option value="750">750 - 553,5€</option>
-                                        <option value="1000">1000 - 738€</option>
-                                        <option value="1500">1500 - 984€</option>
-                                        <option value="2000">2000 - 1168,5€</option>
-                                    </select>
+                                    {% if cargo == "Parceiro" %}
+                                        <input disabled class="form-control" value="{{ ls }}" placeholder="Leads"
+                                               type="text">
+                                    {% endif %}
+                                    {% if cargo != "Parceiro" %}
+                                        <select class="form-control" title="Leads" name="leads" id="leads">
+                                            <option selected disabled value="100">Leads</option>
+                                            {% for data in lds %}
+                                                <option value="{{ data.num }}">{{ data.num }} - {{ data.ptot }}€
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="form-group">
@@ -236,7 +277,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
                                     </div>
-                                    <select class="form-control"  title="Tipo Pagamento" name="tpag">
+                                    <select class="form-control" title="Tipo Pagamento" name="tpag">
                                         <option selected disabled value="rm">Tipo Pagamento</option>
                                         <option value="rm">Referencia Multibanco</option>
                                         <option value="cc">Cartão de Credito</option>
@@ -269,6 +310,17 @@
     </div>
 </footer>
 <!-- Argon Scripts -->
+
+<script>
+    var slc = document.getElementById('leads')
+    var legg = document.getElementById("legg");
+
+    {#function len(id) {#}
+    {#    legg.innerHTML = "100unds(50,00€) - 23%(11,5€) - 61,50 €";#}
+
+</script>
+
+
 <!-- Core -->
 <script src="{{ url_for('static', filename='assets/vendor/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>

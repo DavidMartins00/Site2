@@ -44,84 +44,125 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">
+                        <a class="nav-link active" href="/">
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
 
-                    {% if user.role == "User" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="icons.html">
-                                <span class="nav-link-text">Solicitação de dados</span>
-                            </a>
-                        </li>
-                    {% else %}
+                    {% if user.role == "Admin" or user.role == "Colaborador" or user.role == "Supervisor" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/importacao">
                                 <span class="nav-link-text">Entrada de dados</span>
                             </a>
                         </li>
                     {% endif %}
+                    {% if user.role == "Cliente" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="icons.html">
+                                <span class="nav-link-text">Solicitação de dados</span>
+                            </a>
+                        </li>
+                    {% endif %}
 
-                    {% if user.role == "User" %}
+                    {% if user.role == "Admin" or user.role == "Supervisor" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mm">
+                                <span class="nav-link-text">Manutenção de dados</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
                             <a class="nav-link" href="map.html">
                                 <span class="nav-link-text">Plus</span>
                             </a>
                         </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/mm">
-                                <span class="nav-link-text">Manutenção de dados</span>
-                            </a>
-                        </li>
                     {% endif %}
 
 
-                    {% if user.role == "User" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="profile.html">
-                                <span class="nav-link-text">Mensageiro</span>
-                            </a>
-                        </li>
-                    {% else %}
+                    {% if user.role == "Admin" or user.role == "Parceiro" or user.role == "Supervisor" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/cliente">
                                 <span class="nav-link-text">Cliente</span>
                             </a>
                         </li>
                     {% endif %}
-
-
-                    {% if user.role == "User" %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="tables.html">
-                                <span class="nav-link-text">Divulgação</span>
+                            <a class="nav-link" href="profile.html">
+                                <span class="nav-link-text">Mensageiro</span>
                             </a>
                         </li>
-                    {% else %}
+                    {% endif %}
+
+
+                    {% if user.role == "Admin" or user.role == "Parceiro" %}
                         <li class="nav-item">
                             <a class="nav-link" href="tables.html">
                                 <span class="nav-link-text">Faturamento</span>
                             </a>
                         </li>
                     {% endif %}
-
-
-                    {% if user.role == "User" %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/login">
-                                <span class="nav-link-text">SMS</span>
+                            <a class="nav-link" href="tables.html">
+                                <span class="nav-link-text">Divulgação</span>
                             </a>
                         </li>
-                    {% else %}
+                    {% endif %}
+
+
+                    {% if user.role == "Admin" or user.role == "Parceiro" or user.role == "Supervisor" or user.role == "Colaborador" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/login">
                                 <span class="nav-link-text">Notificação</span>
                             </a>
                         </li>
                     {% endif %}
+                    {% if user.role == "Cliente" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">
+                                <span class="nav-link-text">SMS</span>
+                            </a>
+                        </li>
+
+                    {% endif %}
+                    {% if user.role == "Admin" or user.role == "Parceiro" %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <span class="nav-link-text">Configuração</span>
+                            </a>
+                            <div class="dropdown-menu  dropdown-menu-right ">
+                                <a href="/leadscl" class="dropdown-item">
+                                    <span>Leads Cliente</span>
+                                    {% if user.role == "Admin" %}
+                                        </a><a href="/leadspr" class="dropdown-item">
+                                        <span>Leads Parceiro</span>
+                                    {% endif %}
+                                    </a>
+                            </div>
+                        </li>
+                    {% endif %}
                 </ul>
+                {% if user.role == "Admin" or user.role == "Colaborador"or user.role == "Supervisor" %}
+                    <hr class="my-3">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <span class="nav-link-text">Modulos</span>
+                            </a>
+                            <div class="dropdown-menu  dropdown-menu-right ">
+                                <a href="/inclusao" class="dropdown-item">
+                                    <span>Inclusão</span>
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -483,9 +524,9 @@
     <div style="display: block" id="upload" class="modal">
         <div class="py-6">
         </div>
-        <div class="container mt--8 pb-5">
+        <div class="container mt--5 pb-5">
             <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-7">
+                <div class="col-lg-9 col-md-7">
                     <div class="card bg-secondary border-0 mb-0">
 
                         <div class="card-body px-lg-5 py-lg-5">
@@ -496,7 +537,7 @@
                             <form method="POST">
                                 <h1>Editar Registro</h1>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -507,7 +548,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -519,10 +560,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -534,7 +572,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -547,27 +585,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="input-group input-group-merge input-group-alternative mb-3">
-                                        <div class="input-group-prepend">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                                <div class="input-group-prepend">
                                                         <span class="input-group-text"><i
                                                                 class="ni ni-email-83"></i></span>
+                                                </div>
+                                                <input value="{{ data.email }}" class="form-control" name="email"
+                                                       placeholder="Email" type="email">
+                                            </div>
                                         </div>
-                                        <input value="{{ data.email }}" class="form-control" name="email"
-                                               placeholder="Email" type="email">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group input-group-merge input-group-alternative mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="ni ni-square-pin"></i></span>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i
+                                                            class="ni ni-square-pin"></i></span>
+                                                </div>
+                                                <input value="{{ data.morada }}" class="form-control" name="morada"
+                                                       placeholder="Morada" type="text">
+                                            </div>
                                         </div>
-                                        <input value="{{ data.morada }}" class="form-control" name="morada"
-                                               placeholder="Morada" type="text">
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -579,7 +624,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -591,9 +636,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                                </div>
+                                                <select class="form-control" title="Cargo" name="role">
+                                                    <option selected hidden value="{{ data.role }}">Cargo</option>
+                                                    <option value="Cliente">Cliente</option>
+                                                    <option value="Parceiro">Parceiro</option>
+                                                    <option value="Parceiro25">Parceiro +25</option>
+                                                    <option value="Parceiro50">Parceiro +50</option>
+                                                    <option value="Parceiro100">Parceiro +100</option>
+                                                    <option value="Colaborador">Colaborador</option>
+                                                    <option value="Supervisor">Supervisor</option>
+                                                    <option value="Admin">Administrador</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
@@ -601,8 +666,8 @@
                                                                         class="ni ni-money-coins"></i></span>
                                                 </div>
                                                 <select class="form-control" title="Tipo Pagamento" name="tpag">
-                                                    <option selected hidden value="{{ data.tipop }}"></option>
-                                                    <option disabled value="volvo">Tipo Pagamento</option>
+                                                    <option selected hidden value="{{ data.tipop }}">Tipo Pagamento
+                                                    </option>
                                                     <option value="rm">Referencia Multibanco</option>
                                                     <option value="cc">Cartão de Credito</option>
                                                     <option value="dd">Debito Direto</option>
@@ -610,27 +675,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col">
                                         <div class="form-group">
                                             <div class="input-group input-group-merge input-group-alternative mb-3">
                                                 <div class="input-group-prepend">
-                                                                <span class="input-group-text"><i
-                                                                        class="ni ni-badge"></i></span>
+                                                    <span class="input-group-text"><i class="ni ni-box-2"></i></span>
                                                 </div>
-                                                <input value="{{ data.role }}" class="form-control"
-                                                       name="role"
-                                                       placeholder="Cargo" type="text">
+                                                <select class="form-control" title="Leads" name="leads" id="leads">
+                                                    <option selected hidden value="{{ data.leads }}">Leads</option>
+                                                    {% for data in leads %}
+                                                        <option value="{{ data.num }}">{{ data.num }} - {{ data.ptot }}€
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="input-group input-group-merge input-group-alternative mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="ni ni-box-2"></i></span>
-                                        </div>
-                                        <input value="{{ data.leads }}" class="form-control" name="leads"
-                                               placeholder="Leads" type="text">
                                     </div>
                                 </div>
 

@@ -24,7 +24,8 @@ class User(db.Model, UserMixin):
     perfil2 = db.Column(db.String(150), nullable=True)
     leads = db.Column(db.String(150), nullable=True)
     tipop = db.Column(db.String(150), nullable=True)
-    #created_at = db.Column(DateTime(timezone=True), default=datetime.utcnow)
+    crby = db.Column(db.Integer())
+    # created_at = db.Column(DateTime(timezone=True), default=datetime.utcnow)
 
 
 class Produto(db.Model):
@@ -122,3 +123,22 @@ class Cliente(db.Model):
     nome = db.Column(db.String(150))
     tokenn = db.Column(db.String(150))
     role = db.Column(db.String(150))
+    extra = db.Column(db.Integer)
+    extra2 = db.Column(db.Integer)
+
+
+class Leads(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    num = db.Column(db.Integer)
+    piva = db.Column(db.Integer)
+    ptot = db.Column(db.Integer)
+    pin = db.Column(db.Integer)
+    crby = db.Column(db.Integer)
+
+
+class Leadsp(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    num = db.Column(db.Integer)
+    piva = db.Column(db.Integer)
+    ptot = db.Column(db.Integer)
+    pin = db.Column(db.Integer)

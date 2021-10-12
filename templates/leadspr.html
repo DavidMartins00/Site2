@@ -17,15 +17,26 @@
           href="{{ url_for('static', filename='assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') }}"
           type="text/css">
     <!-- Page plugins -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <!-- Argon CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/argon.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cost.css') }}" type="text/css">
+
 </head>
 <body>
-
-<link href="{{ url_for('static', filename='css.css') }}" rel="stylesheet">
-<script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-
+<style>
+    body.modal-open .supreme-container {
+        -webkit-filter: blur(1px);
+        -moz-filter: blur(1px);
+        -o-filter: blur(1px);
+        -ms-filter: blur(1px);
+        filter: blur(1px);
+    }
+</style>
 
 <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
@@ -48,7 +59,7 @@
 
                     {% if user.role == "Admin" or user.role == "Colaborador" or user.role == "Supervisor" %}
                         <li class="nav-item">
-                            <a class="nav-link active" href="/importacao">
+                            <a class="nav-link" href="/importacao">
                                 <span class="nav-link-text">Entrada de dados</span>
                             </a>
                         </li>
@@ -165,7 +176,6 @@
     </div>
 </nav>
 <div class="main-content" id="panel">
-
 
     <!-- Topnav -->
     <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
@@ -372,16 +382,36 @@
             </div>
         </div>
     </nav>
+
+
+    <!-- Mensagens-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'error' %}
+                    <div class="notice notice-danger" onclick="this.style.display='none';">
+                        <strong>Erro</strong> {{ message }}
+                    </div>
+
+                {% else %}
+                    <div class="notice notice-success" onclick="this.style.display='none';">
+                        <strong>Sucesso</strong> {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <h6 class="h2 text-white d-inline-block mb-0">Importação</h6>
+                        <h6 class="h2 text-white d-inline-block mb-0">Leads</h6>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item active">Importação</li>
+                                <li class="breadcrumb-item">Leads</li>
                             </ol>
                         </nav>
                     </div>
@@ -434,11 +464,11 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="card card-stats">
                             <!-- Card body -->
-                            <div class="card-body">
+                            <div class="card-body" id="criar">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Download Realizado</h5>
-                                        <span class="h2 font-weight-bold mb-0">924</span>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Criar Novo Lead</h5>
+                                        <span class="h2 font-weight-bold mb-0"></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -481,90 +511,42 @@
 
     <!-- Page content -->
 
-    <div class="container-fluid mt--6">
+    <div class="container-fluid mt--6" id="tab">
         <div class="row justify-content-center">
             <div class="col">
                 <div class="card">
                     <div class="card-header bg-transparent">
                         <div class="row align-items-center">
-                            <div class="container">
-                                <form method="POST" action="{{ url_for('views.importacao') }}">
-                                    <div class="row">
-                                        <div class="form-group col">
-                                            <label>Nome</label>
-                                            <input type="text" class="form-control" name="nome" id="nome"
-                                                   placeholder="Nome">
-                                        </div>
-                                        <div class="form-group col">
-                                            <label>Email</label>
-                                            <input type="text" class="form-control" name="email" id="email"
-                                                   placeholder="Email">
-                                        </div>
-                                        <div class="form-group col">
-                                            <label>Telefone</label>
-                                            <input type="text" class="form-control" name="tele" id="tele"
-                                                   placeholder="Telefone">
-                                        </div>
-                                        <div class="form-group col">
-                                            <label>Pais</label>
-                                            <input type="text" class="form-control" name="pais" id="pais"
-                                                   placeholder="Pais">
-                                        </div>
-                                        <div class="form-group col">
-                                            <label>Perfil1</label>
-                                            <input type="text" class="form-control" name="perfil1" id="perfil1"
-                                                   placeholder="Perfil1">
-                                        </div>
-                                        <div class="form-group col">
-                                            <label>Perfil2</label>
-                                            <input type="text" class="form-control" name="perfil2" id="perfil2"
-                                                   placeholder="Perfil2">
-                                        </div>
-                                    </div>
-                                    <div style="text-align: center">
-                                        <button class="btn btn-dark" type="submit">Submeter</button>
-                                    </div>
-                                </form>
-                                <br>
-                                <div style="text-align: center">
-                                    <button id="import" class="btn btn-danger">Importar</button>
-                                </div>
+                            <div class="table-responsive">
+                                <table class="table align-items-center">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Quantidade</th>
+                                        <th>Preço Unidade</th>
+                                        <th>Valor do iva(23%)</th>
+                                        <th>Valor Total</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for data in dados %}
+                                        <tr>
+                                            <td>{{ data.id }}</td>
+                                            <td>{{ data.num }}</td>
+                                            <td>{{ data.pin }}€</td>
+                                            <td>{{ data.piva }}€</td>
+                                            <td>{{ data.ptot }}€</td>
+                                            <td><a class="btn btn-warning"
+                                                   href="/leadspr/{{ data.id }}/update">Editar</a>
+                                                <a class="btn btn-danger"
+                                                   href="/leadspr/{{ data.id }}/delete">Apagar</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    {# Modal Importar #}
-    <div id="upload" class="modal">
-        <div class=" py-7 py-lg-8 pt-lg-9">
-        </div>
-        <div class="container mt--8 pb-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-7">
-                    <div class="card bg-secondary border-0 mb-0">
-
-                        <div class="card-body px-lg-5 py-lg-5">
-                            <span class="close">&times;</span>
-                            <div class="text-center text-muted mb-4">
-
-                            </div>
-                            <form method="POST" action="{{ url_for('views.uploadcsv') }}" enctype=multipart/form-data>
-                                <h1>Importar CSV</h1>
-                                <div class="form-group">
-                                    <label>Ficheiro</label>
-                                    <input type="file" class="form-control" name="file" id="file"
-                                           placeholder="Ficheiro" accept=".csv">
-                                </div>
-                                <br>
-                                <button class="btn btn-dark" id="but" type="submit">
-                                    Submeter
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -572,12 +554,79 @@
         </div>
     </div>
 </div>
+
+
+{# Modal Importar #}
+<div id="upload" class="modal">
+    <div class=" py-7 py-lg-8 pt-lg-9">
+    </div>
+    <div class="container mt--8 pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="card bg-secondary border-0 mb-0">
+
+                    <div class="card-body px-lg-5 py-lg-5">
+                        <span class="close">&times;</span>
+                        <div class="text-center text-muted mb-4">
+
+                        </div>
+                        <form method="POST">
+                            <h1>Criar Lead</h1>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-box-2"></i></span>
+                                    </div>
+                                    <input class="form-control" name="num" placeholder="Quantidade" type="number">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
+                                    </div>
+                                    <input class="form-control" name="pin" placeholder="Preço Unidade" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
+                                    </div>
+                                    <input class="form-control" name="piva" placeholder="Valor do iva(23%)" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group input-group-merge input-group-alternative mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
+                                    </div>
+                                    <input class="form-control" name="ptot" placeholder="Valor Total" type="text">
+                                </div>
+                            </div>
+
+                            <br>
+                            <button class="btn btn-dark" id="but" type="submit">
+                                Submeter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    function nott() {
+        alert("Funcionalidade ainda não implementada");
+    }
+
     // Get the modal
     var mimportar = document.getElementById("upload");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("import");
+    var btn = document.getElementById("criar");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
@@ -599,15 +648,11 @@
         }
     }
 </script>
-
-<script src="{{ url_for('static', filename='assets/vendor/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/vendor/js-cookie/js.cookie.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
 <script src="{{ url_for('static', filename='assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
 <!-- Optional JS -->
-<script src="{{ url_for('static', filename='assets/vendor/chart.js/dist/Chart.min.js') }}"></script>
-<script src="{{ url_for('static', filename='assets/vendor/chart.js/dist/Chart.extension.js') }}"></script>
 <!-- Argon JS -->
 <script src="{{ url_for('static', filename='assets/js/argon.js') }}"></script>
 

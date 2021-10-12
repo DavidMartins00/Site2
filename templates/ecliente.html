@@ -44,84 +44,125 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">
+                        <a class="nav-link active" href="/">
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
 
-                    {% if user.role == "User" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="icons.html">
-                                <span class="nav-link-text">Solicitação de dados</span>
-                            </a>
-                        </li>
-                    {% else %}
+                    {% if user.role == "Admin" or user.role == "Colaborador" or user.role == "Supervisor" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/importacao">
                                 <span class="nav-link-text">Entrada de dados</span>
                             </a>
                         </li>
                     {% endif %}
+                    {% if user.role == "Cliente" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="icons.html">
+                                <span class="nav-link-text">Solicitação de dados</span>
+                            </a>
+                        </li>
+                    {% endif %}
 
-                    {% if user.role == "User" %}
+                    {% if user.role == "Admin" or user.role == "Supervisor" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mm">
+                                <span class="nav-link-text">Manutenção de dados</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
                             <a class="nav-link" href="map.html">
                                 <span class="nav-link-text">Plus</span>
                             </a>
                         </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href="/mm">
-                                <span class="nav-link-text">Manutenção de dados</span>
-                            </a>
-                        </li>
                     {% endif %}
 
 
-                    {% if user.role == "User" %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="profile.html">
-                                <span class="nav-link-text">Mensageiro</span>
-                            </a>
-                        </li>
-                    {% else %}
+                    {% if user.role == "Admin" or user.role == "Parceiro" or user.role == "Supervisor" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/cliente">
                                 <span class="nav-link-text">Cliente</span>
                             </a>
                         </li>
                     {% endif %}
-
-
-                    {% if user.role == "User" %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="tables.html">
-                                <span class="nav-link-text">Divulgação</span>
+                            <a class="nav-link" href="profile.html">
+                                <span class="nav-link-text">Mensageiro</span>
                             </a>
                         </li>
-                    {% else %}
+                    {% endif %}
+
+
+                    {% if user.role == "Admin" or user.role == "Parceiro" %}
                         <li class="nav-item">
                             <a class="nav-link" href="tables.html">
                                 <span class="nav-link-text">Faturamento</span>
                             </a>
                         </li>
                     {% endif %}
-
-
-                    {% if user.role == "User" %}
+                    {% if user.role == "Cliente" %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/login">
-                                <span class="nav-link-text">SMS</span>
+                            <a class="nav-link" href="tables.html">
+                                <span class="nav-link-text">Divulgação</span>
                             </a>
                         </li>
-                    {% else %}
+                    {% endif %}
+
+
+                    {% if user.role == "Admin" or user.role == "Parceiro" or user.role == "Supervisor" or user.role == "Colaborador" %}
                         <li class="nav-item">
                             <a class="nav-link" href="/login">
                                 <span class="nav-link-text">Notificação</span>
                             </a>
                         </li>
                     {% endif %}
+                    {% if user.role == "Cliente" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">
+                                <span class="nav-link-text">SMS</span>
+                            </a>
+                        </li>
+
+                    {% endif %}
+                    {% if user.role == "Admin" or user.role == "Parceiro" %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <span class="nav-link-text">Configuração</span>
+                            </a>
+                            <div class="dropdown-menu  dropdown-menu-right ">
+                                <a href="/leadscl" class="dropdown-item">
+                                    <span>Leads Cliente</span>
+                                    {% if user.role == "Admin" %}
+                                        </a><a href="/leadspr" class="dropdown-item">
+                                        <span>Leads Parceiro</span>
+                                    {% endif %}
+                                    </a>
+                            </div>
+                        </li>
+                    {% endif %}
                 </ul>
+                {% if user.role == "Admin" or user.role == "Colaborador"or user.role == "Supervisor" %}
+                    <hr class="my-3">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
+                               aria-expanded="false">
+                                <span class="nav-link-text">Modulos</span>
+                            </a>
+                            <div class="dropdown-menu  dropdown-menu-right ">
+                                <a href="/inclusao" class="dropdown-item">
+                                    <span>Inclusão</span>
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -500,7 +541,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                                         </div>
-                                        <input value="{{ data.name }}" class="form-control" name="nome" placeholder="Nome" type="text">
+                                        <input value="{{ data.name }}" class="form-control" name="nome"
+                                               placeholder="Nome" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -508,7 +550,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                         </div>
-                                        <input value="{{ data.email }}" class="form-control" name="email" placeholder="Email" type="email">
+                                        <input value="{{ data.email }}" class="form-control" name="email"
+                                               placeholder="Email" type="email">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -516,7 +559,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                                         </div>
-                                        <input value="{{ data.tele }}" class="form-control" name="tele" placeholder="Telefone" type="text">
+                                        <input value="{{ data.tele }}" class="form-control" name="tele"
+                                               placeholder="Telefone" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -524,7 +568,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-square-pin"></i></span>
                                         </div>
-                                        <input value="{{ data.pais }}" class="form-control" name="pais" placeholder="Pais" type="text">
+                                        <input value="{{ data.pais }}" class="form-control" name="pais"
+                                               placeholder="Pais" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -532,7 +577,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-tag"></i></span>
                                         </div>
-                                        <input value="{{ data.perfil1 }}" class="form-control" name="perfil1" placeholder="Perfil 1" type="text">
+                                        <input value="{{ data.perfil1 }}" class="form-control" name="perfil1"
+                                               placeholder="Perfil 1" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -540,7 +586,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-tag"></i></span>
                                         </div>
-                                        <input value="{{ data.perfil2 }}" class="form-control" name="perfil2" placeholder="Perfil 2" type="text">
+                                        <input value="{{ data.perfil2 }}" class="form-control" name="perfil2"
+                                               placeholder="Perfil 2" type="text">
                                     </div>
                                 </div>
                                 <br>
